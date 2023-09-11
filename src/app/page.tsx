@@ -8,6 +8,7 @@ import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import styled from 'styled-components';
 import { Button } from './components/Button/Button';
 import Card from './components/Card/Card';
+import { genRandomId } from './utils/genRandomId';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -35,6 +36,7 @@ const Title = styled.h1`
 const GET_CHARACTER_BY_ID = gql`
 query($id: ID!) {
   character(id: $id) {
+    id
     name
     status
     species
@@ -56,14 +58,15 @@ query($id: ID!) {
 
 export default function Page() {
   const [getUserById, { loading, error, data }] = useLazyQuery(GET_CHARACTER_BY_ID);
-  const [currentCharacter, setCurrentCharacter] = useState()
+  const [currentCharacter, setCurrentCharacter] = useState<any>()
   const [history, setHistory] = useState<Object[]>([]) // possibly not rendered
   const [viewHistoryOpen, setViewHistoryOpen] = useState<boolean>(false)
 
-  console.log(history)
+  console.log(currentCharacter)
 
   const handleOnClick = () => {
-    const id = '5d299c853d1d85c017cc3443' // random generate
+    const preffix = '5d299c853d1d85c017cc3'
+    const id = `${preffix}${genRandomId(preffix)}`
     getUserById({ variables: { id } }).then(res => {
       setCurrentCharacter(res.data.character)
       setHistory([res.data.character, ...history])
@@ -85,8 +88,12 @@ export default function Page() {
         The Rick and Morty Random Character Generator
       </Title>
       <Container>
-        <Image width={312} height={312} src="https://rickandmortyapi.com/api/character/avatar/443.jpeg" alt="tanktopJerry" />
-        { data && <Card character={currentCharacter} />}
+        { data && currentCharacter && (
+          <>
+            <Image width={312} height={312} src={currentCharacter.image} alt="tanktopJerry" />
+            <Card character={currentCharacter} />
+          </>
+        )}
       </Container>
       <ButtonsContainer>
         <Button onClick={handleOnClick} $primary>Generate</Button>

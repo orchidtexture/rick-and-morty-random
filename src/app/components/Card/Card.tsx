@@ -37,13 +37,13 @@ const FieldsGrid = styled.div`
   display: grid;
 `
 
-const Header = () => {
+const Header = ({ characterId, characterName }:{ characterId: string; characterName: string }) => {
   return (
     <HeaderContainer>
-      <CharacterName>Tanktop Jerry</CharacterName>
+      { characterName && <CharacterName>{characterName}</CharacterName> }
       <CharacterId>
-        <span>Character id:</span>
-        <span> 1</span>
+        <span>Character id: </span>
+        { characterId && <span>{characterId}</span> }
       </CharacterId>
     </HeaderContainer>
   )
@@ -68,26 +68,43 @@ const unknownIfNull = (field: null | string): string => {
   return !!field ? field : 'Unknown'
 }
 
+const formatDate = (date: string | undefined) => {
+  if (date) {
+    const options: Intl.DateTimeFormatOptions = { month: 'short', day: '2-digit', year: 'numeric'}
+    const d = new Date(date)
+    return d.toLocaleDateString(undefined, options)
+  } 
+  return 'Unkown'
+}
+
+const handleNamedProperties = (property: any | undefined): string => {
+  return !!property ? property.name : 'Unknown'
+}
+
 const Card = ({ character }: { character: any}) => {
-  console.log(character)
+  console.log(character.image)
   return (
     <CardInner>
-      <Header />
-      {character && (<FieldsGrid>
-        <FieldCard fieldName='Status' value={unknownIfNull(character.status)} />
-        <hr/>
-        <FieldCard fieldName='Species' value={unknownIfNull(character.species)} />
-        <hr/>
-        <FieldCard fieldName='Type' value={unknownIfNull(character.type)} />
-        <hr/>
-        <FieldCard fieldName='Gender' value={unknownIfNull(character.gender)} />
-        <hr/>
-        <FieldCard fieldName='Origin' value={unknownIfNull(character.origin)} />
-        <hr/>
-        <FieldCard fieldName='Location' value={unknownIfNull(character.location.name)} />
-        <hr/>
-        <FieldCard fieldName='Created At' value={unknownIfNull(character.created)} />
-      </FieldsGrid>)}
+      {character && (
+        <>
+          <Header characterId={character.id} characterName={character.name} />
+          <FieldsGrid>
+            <FieldCard fieldName='Status' value={unknownIfNull(character.status)} />
+            <hr/>
+            <FieldCard fieldName='Species' value={unknownIfNull(character.species)} />
+            <hr/>
+            <FieldCard fieldName='Type' value={unknownIfNull(character.type)} />
+            <hr/>
+            <FieldCard fieldName='Gender' value={unknownIfNull(character.gender)} />
+            <hr/>
+            <FieldCard fieldName='Origin' value={handleNamedProperties(character.origin)} />
+            <hr/>
+            <FieldCard fieldName='Location' value={handleNamedProperties(character.location)} />
+            <hr/>
+            <FieldCard fieldName='Created At' value={formatDate(character.created)} />
+          </FieldsGrid>
+        </>
+      )}
     </CardInner>
   )
 }
