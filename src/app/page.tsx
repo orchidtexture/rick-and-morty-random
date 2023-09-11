@@ -3,7 +3,6 @@
 export const dynamic = "force-dynamic";
 
 import { gql, useLazyQuery } from '@apollo/client';
-import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import styled from 'styled-components';
 import { Button } from './components/Button/Button';
@@ -30,9 +29,11 @@ export interface Character {
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin-top: 4%;
   padding: 0 2%;
+  flex-wrap: wrap-reverse;
+  align-items: start;
 `
 
 const ButtonsContainer = styled.div`
@@ -47,6 +48,10 @@ const Title = styled.h1`
   font-style: oblique;
   font-size: xx-large;
   text-align: center;
+`
+
+const PageContainer = styled.div`
+  min-height: calc(100vh - 100px);
 `
 
 const GET_CHARACTER_BY_ID = gql`
@@ -96,27 +101,29 @@ export default function Page() {
   }
 
   return (
-    <div className="space-y-4">
-      <Title>
-        The Rick and Morty Random Character Generator
-      </Title>
-      <Container>
-        { data && currentCharacter && (
-          <>
-            <Image style={{ borderRadius: '0.5rem'}} width={312} height={312} src={currentCharacter.image} alt="tanktopJerry" />
-            <Card character={currentCharacter} />
-          </>
-        )}
-      </Container>
-      <ButtonsContainer>
-        <Button onClick={handleOnClick} $primary>Generate</Button>
-        <Button onClick={handleOpenHistory}>History</Button>
-      </ButtonsContainer>
-      {viewHistoryOpen && (
+    <>
+      <PageContainer>
+        <Title>
+          The Rick and Morty Random Character Generator
+        </Title>
         <Container>
-          <History characters={history} handleViewOnClick={handleViewOnClick} />
+          { data && currentCharacter && (
+            <>
+              <Image style={{ borderRadius: '0.5rem', marginBottom: '10px'}} width={312} height={312} src={currentCharacter.image} alt="tanktopJerry" />
+              <Card character={currentCharacter} />
+            </>
+          )}
         </Container>
-      )}
-    </div>
+        <ButtonsContainer>
+          <Button onClick={handleOnClick} $primary>Generate</Button>
+          <Button onClick={handleOpenHistory}>History</Button>
+        </ButtonsContainer>
+        {viewHistoryOpen && (
+          <Container>
+            <History characters={history} handleViewOnClick={handleViewOnClick} />
+          </Container>
+        )}
+      </PageContainer>
+    </>   
   );
 }

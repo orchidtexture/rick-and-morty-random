@@ -12,7 +12,7 @@ export const Button = styled.a<{ $primary?: boolean; }>`
   margin: 0.5rem 1rem;
   padding: 0.5rem 0;
   transition: all 200ms ease-in-out;
-  width: 11rem;
+  width: 8rem;
   text-align: center;
 
   &:hover {
@@ -21,6 +21,11 @@ export const Button = styled.a<{ $primary?: boolean; }>`
 
   &:active {
     filter: brightness(1);
+  }
+
+  @media only screen and (min-width: 768px) {
+    /* For everything bigger than 768px */
+    width: 11rem;
   }
 
   ${props => props.$primary && css`

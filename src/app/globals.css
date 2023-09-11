@@ -105,3 +105,12 @@ a {
     color-scheme: dark;
   }
 }
+
+.footer {
+    position: absolute;
+    width: 100%;
+    color: #fff;
+    margin: 20px 0;
+    text-align: center;
+    height: 100px;
+}

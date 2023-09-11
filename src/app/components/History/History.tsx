@@ -7,7 +7,11 @@ import { Button } from '../Button/Button'
 const Name = styled.h4`
   color: #5adb01;
   margin: 2% 0;
-  font-size: x-large;
+
+  @media only screen and (min-width: 768px) {
+    /* For everything bigger than 768px */
+    font-size: x-large;
+  }
 `
 
 const Card = styled.div`
@@ -28,14 +32,14 @@ const Grid = styled.div`
 const SmallCard = ({ character, handleOnclick }: { character: Character; handleOnclick: (character: Character) => void }) => {
   return (
     <Card>
-      <Image style={{ borderRadius: '0.5rem'}} width={80} height={80} src={character.image} alt="tanktopJerry" />
+      <Image style={{ borderRadius: '0.5rem', margin: '1% 1%'}} width={80} height={80} src={character.image} alt="tanktopJerry" />
       <Name>{character.name}</Name>
       <Button onClick={() => handleOnclick(character)}>View</Button>
     </Card>
   )
 }
 
-const History = ({ characters, handleViewOnClick }: { characters: Character[]; handleViewOnClick: () => void }) => {
+const History = ({ characters, handleViewOnClick }: { characters: Character[]; handleViewOnClick: (character: Character) => void }) => {
   return (
     <Grid>
       {characters.map((c) => {

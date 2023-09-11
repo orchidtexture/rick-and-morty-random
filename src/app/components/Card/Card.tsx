@@ -5,8 +5,15 @@ import styled from "styled-components";
 const CardInner = styled.div`
   padding: 1rem /* 16px */;
   background-color: rgb(24 24 27 / 0.8);
-  border-radius: 1rem /* 16px */;
-  width: 60%;
+  border-radius: 0.5rem /* 16px */;
+  width: auto;
+  margin-bottom: 1rem;
+  margin-bottom: 10px;
+
+  @media only screen and (min-width: 768px) {
+    /* For everything bigger than 768px */
+    width: 60%;
+  }
 `;
 
 const SkeletonImg = styled.div`

@@ -22,6 +22,7 @@ export default function RootLayout({
         <ApolloWrapper>
           <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
         </ApolloWrapper>
+        <div className={'footer'}>Built with &lt;\3 by <a href="https://github.com/orchidtexture" style={{color: '#5adb01', textDecorationLine: 'underline'}}>0x5ADB01</a> <br/> <span>╥﹏╥</span></div>
       </body>
     </html>
   )
