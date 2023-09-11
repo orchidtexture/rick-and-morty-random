@@ -27,6 +27,11 @@ const Grid = styled.div`
   display: grid;
   width: 100%;
   gap: 6%;
+
+  @media only screen and (min-width: 768px) {
+    /* For everything bigger than 768px */
+    width: 60%
+  }
 `
 
 const SmallCard = ({ character, handleOnclick }: { character: Character; handleOnclick: (character: Character) => void }) => {
