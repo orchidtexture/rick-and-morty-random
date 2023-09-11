@@ -8,9 +8,25 @@ import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import styled from 'styled-components';
 import { Button } from './components/Button/Button';
 import Card from './components/Card/Card';
+import History from './components/History/History';
 import { genRandomId } from './utils/genRandomId';
 import Image from 'next/image';
 import { useState } from 'react';
+
+export interface Character {
+  __typeName: string
+  created: string
+  episode: any[]
+  gender: string
+  id: string
+  image: string
+  location: any | null
+  name: string
+  origin: any | null
+  species: string
+  status: string
+  type: string
+}
 
 const Container = styled.div`
   display: flex;
@@ -58,27 +74,24 @@ query($id: ID!) {
 
 export default function Page() {
   const [getUserById, { loading, error, data }] = useLazyQuery(GET_CHARACTER_BY_ID);
-  const [currentCharacter, setCurrentCharacter] = useState<any>()
-  const [history, setHistory] = useState<Object[]>([]) // possibly not rendered
+  const [currentCharacter, setCurrentCharacter] = useState<Character | undefined>()
+  const [history, setHistory] = useState<Character[] | []>([]) // possibly not rendered
   const [viewHistoryOpen, setViewHistoryOpen] = useState<boolean>(false)
 
-  console.log(currentCharacter)
-
   const handleOnClick = () => {
-    const preffix = '5d299c853d1d85c017cc3'
-    const id = `${preffix}${genRandomId(preffix)}`
+    const prefix = '5d299c853d1d85c017cc3'
+    const id = `${prefix}${genRandomId({ prefix, min: undefined, max: undefined })}`
     getUserById({ variables: { id } }).then(res => {
       setCurrentCharacter(res.data.character)
       setHistory([res.data.character, ...history])
     })
   }
 
-  const handleViewOnClick = (character: any) => {
-    // setCurrentCharacter(character)
+  const handleViewOnClick = (character: Character) => {
+    setCurrentCharacter(character)
   }
 
   const handleOpenHistory = () => {
-    console.log(history)
     setViewHistoryOpen(!viewHistoryOpen)
   }
 
@@ -90,7 +103,7 @@ export default function Page() {
       <Container>
         { data && currentCharacter && (
           <>
-            <Image width={312} height={312} src={currentCharacter.image} alt="tanktopJerry" />
+            <Image style={{ borderRadius: '0.5rem'}} width={312} height={312} src={currentCharacter.image} alt="tanktopJerry" />
             <Card character={currentCharacter} />
           </>
         )}
@@ -99,7 +112,11 @@ export default function Page() {
         <Button onClick={handleOnClick} $primary>Generate</Button>
         <Button onClick={handleOpenHistory}>History</Button>
       </ButtonsContainer>
-      
+      {viewHistoryOpen && (
+        <Container>
+          <History characters={history} handleViewOnClick={handleViewOnClick} />
+        </Container>
+      )}
     </div>
   );
 }

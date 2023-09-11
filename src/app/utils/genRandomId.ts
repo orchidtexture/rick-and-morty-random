@@ -1,4 +1,4 @@
-export const genRandomId = ({ prefix, min = 0, max = 494 }: { prefix: string; min: number, max: number }) => {
+export const genRandomId = ({ prefix, min = 0, max = 494 }: { prefix: string; min: number | undefined, max: number | undefined }) => {
   // find diff
   let difference = max - min;
   // generate random number 

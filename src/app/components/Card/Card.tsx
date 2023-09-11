@@ -1,3 +1,4 @@
+import { Character } from '@/app/page';
 import React from 'react'
 import styled from "styled-components";
 
@@ -81,8 +82,7 @@ const handleNamedProperties = (property: any | undefined): string => {
   return !!property ? property.name : 'Unknown'
 }
 
-const Card = ({ character }: { character: any}) => {
-  console.log(character.image)
+const Card = ({ character }: { character: Character}) => {
   return (
     <CardInner>
       {character && (
