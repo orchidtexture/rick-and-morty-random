@@ -82,6 +82,14 @@ export default function Page() {
   const [currentCharacter, setCurrentCharacter] = useState<Character | undefined>()
   const [history, setHistory] = useState<Character[] | []>([]) // possibly not rendered
   const [viewHistoryOpen, setViewHistoryOpen] = useState<boolean>(false)
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0, 
+      left: 0, 
+      behavior: 'smooth'
+    })
+  }
 
   const handleOnClick = () => {
     const prefix = '5d299c853d1d85c017cc3'
@@ -92,8 +100,9 @@ export default function Page() {
     })
   }
 
-  const handleViewOnClick = (character: Character) => {
+  const handleViewOnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, character: Character) => {
     setCurrentCharacter(character)
+    handleScroll(e)
   }
 
   const handleOpenHistory = () => {

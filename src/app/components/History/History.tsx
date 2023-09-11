@@ -34,17 +34,17 @@ const Grid = styled.div`
   }
 `
 
-const SmallCard = ({ character, handleOnclick }: { character: Character; handleOnclick: (character: Character) => void }) => {
+const SmallCard = ({ character, handleOnclick }: { character: Character; handleOnclick: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, character: Character) => void }) => {
   return (
     <Card>
       <Image style={{ borderRadius: '0.5rem', margin: '1% 1%'}} width={80} height={80} src={character.image} alt="tanktopJerry" />
       <Name>{character.name}</Name>
-      <Button onClick={() => handleOnclick(character)}>View</Button>
+      <Button onClick={(e) => handleOnclick(e, character)}>View</Button>
     </Card>
   )
 }
 
-const History = ({ characters, handleViewOnClick }: { characters: Character[]; handleViewOnClick: (character: Character) => void }) => {
+const History = ({ characters, handleViewOnClick }: { characters: Character[]; handleViewOnClick: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, character: Character) => void }) => {
   return (
     <Grid>
       {characters.map((c) => {
