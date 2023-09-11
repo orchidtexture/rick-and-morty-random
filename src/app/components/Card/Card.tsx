@@ -64,26 +64,30 @@ const FieldCard = ({ fieldName, value }: { fieldName: string; value: string}) =>
   )
 }
 
-const Card = () => {
+const unknownIfNull = (field: null | string): string => {
+  return !!field ? field : 'Unknown'
+}
+
+const Card = ({ character }: { character: any}) => {
+  console.log(character)
   return (
     <CardInner>
       <Header />
-      {/* <SkeletonImg /> */}
-      <FieldsGrid>
-        <FieldCard fieldName='Status' value='Alive' />
+      {character && (<FieldsGrid>
+        <FieldCard fieldName='Status' value={unknownIfNull(character.status)} />
         <hr/>
-        <FieldCard fieldName='Species' value='Human' />
+        <FieldCard fieldName='Species' value={unknownIfNull(character.species)} />
         <hr/>
-        <FieldCard fieldName='Type' value='Unknown' />
+        <FieldCard fieldName='Type' value={unknownIfNull(character.type)} />
         <hr/>
-        <FieldCard fieldName='Gender' value='Male' />
+        <FieldCard fieldName='Gender' value={unknownIfNull(character.gender)} />
         <hr/>
-        <FieldCard fieldName='Origin' value='Unknown' />
+        <FieldCard fieldName='Origin' value={unknownIfNull(character.origin)} />
         <hr/>
-        <FieldCard fieldName='Location' value='Earth' />
+        <FieldCard fieldName='Location' value={unknownIfNull(character.location.name)} />
         <hr/>
-        <FieldCard fieldName='Created At' value='Tue May 01 2018' />
-      </FieldsGrid>
+        <FieldCard fieldName='Created At' value={unknownIfNull(character.created)} />
+      </FieldsGrid>)}
     </CardInner>
   )
 }
